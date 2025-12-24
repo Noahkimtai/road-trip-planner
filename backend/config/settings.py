@@ -4,6 +4,7 @@ Django settings for Road trip planner project.
 """
 
 from pathlib import Path
+from decouple import config
 from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -43,6 +44,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "apps.authentication",
+    "apps.places",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
@@ -161,6 +163,11 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+
+# External API Configuration
+GOOGLE_MAPS_API_KEY = config("GOOGLE_MAPS_API_KEY", default="")
+OPENWEATHER_API_KEY = config("OPENWEATHER_API_KEY", default="")
 
 # Custom User Model
 AUTH_USER_MODEL = "authentication.User"

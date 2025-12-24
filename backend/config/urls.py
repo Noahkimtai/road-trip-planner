@@ -10,4 +10,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # API Endpoints
     path("api/auth/", include("apps.authentication.urls")),
+    path("api/places/", include("apps.places.urls")),
 ]
