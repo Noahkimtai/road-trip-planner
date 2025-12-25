@@ -45,6 +45,8 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "apps.authentication",
     "apps.places",
+    "apps.weather",
+    "apps.routes",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
