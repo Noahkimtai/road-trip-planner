@@ -13,4 +13,6 @@ urlpatterns = [
     path("api/places/", include("apps.places.urls")),
     path("api/weather/", include("apps.weather.urls")),
     path("api/routes/", include("apps.routes.urls")),
+    path("api/trips/", include("apps.trips.urls")),
+    path("api/recommendations/", include("apps.recommendations.urls")),
 ]

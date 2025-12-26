@@ -1,10 +1,13 @@
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 
 class CalculateRouteView(APIView):
     """Calculate route between waypoints"""
+
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         waypoints = request.data.get("waypoints", [])
@@ -36,6 +39,8 @@ class CalculateRouteView(APIView):
 
 class RouteDetailView(APIView):
     """Get details of a route"""
+
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, route_id):
         # Mock route details for now
