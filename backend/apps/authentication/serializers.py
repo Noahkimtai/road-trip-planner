@@ -38,6 +38,14 @@ class UserLoginSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
 
+    class Meta:
+        model = User
+        fields = (
+            "email",
+            "username",
+            "password",
+        )
+
     def validate(self, attrs):
         email = attrs.get("emai")
         password = attrs.get(password)
