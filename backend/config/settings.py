@@ -188,7 +188,11 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
 }
 
-
+ALLOWED_HOSTS = [
+    "road-trip-planner.onrender.com",
+    "localhost",
+    "127.0.0.1",
+]
 # External API Configuration
 GOOGLE_MAPS_API_KEY = config("GOOGLE_MAPS_API_KEY", default="")
 OPENWEATHER_API_KEY = config("OPENWEATHER_API_KEY", default="")
