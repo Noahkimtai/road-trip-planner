@@ -7,6 +7,7 @@ from pathlib import Path
 from decouple import config
 from datetime import timedelta
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -89,11 +90,19 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default="postgresql://postgres:postgres@localhost:5432/trip-planner",
+        conn_max_age=600,
+    )
 }
 
 # DATABASES = {
@@ -183,7 +192,7 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "My API",
+    "TITLE": "Trip Planner",
     "DESCRIPTION": "API documentation",
     "VERSION": "1.0.0",
 }
@@ -199,6 +208,3 @@ OPENWEATHER_API_KEY = config("OPENWEATHER_API_KEY", default="")
 
 # Custom User Model
 AUTH_USER_MODEL = "authentication.User"
-
-
-# custom user model
