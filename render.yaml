@@ -1,8 +1,8 @@
 databases:
   - name: trip-planner
     plan: free
-    databaseName: trip-planner
-    user: postgres
+    databaseName: config
+    user: config
 
 services:
   - type: web
