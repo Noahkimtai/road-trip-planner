@@ -18,7 +18,7 @@ services:
           property: connectionString
 
       - key: DJANGO_SETTINGS_MODULE
-        value: config.settings.production
+        value: config.settings
 
       - key: SECRET_KEY
         generateValue: true
