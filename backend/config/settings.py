@@ -198,6 +198,7 @@ SPECTACULAR_SETTINGS = {
 }
 
 ALLOWED_HOSTS = [
+    "trip-planner-backend-9wyv.onrender.com",
     "road-trip-planner.onrender.com",
     "localhost",
     "127.0.0.1",
