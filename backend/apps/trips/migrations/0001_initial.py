@@ -55,9 +55,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "start_date",
-                    models.BooleanField(
-                        default=False, help_text="If this trip is public"
-                    ),
+                    models.DateField(blank=True, null=True),
                 ),
                 (
                     "is_public",

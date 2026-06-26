@@ -1,4 +1,20 @@
 services:
+  frontend:
+    env_file:
+      - .env
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: trip-planner-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - trip_network
+    profiles: ["frontend"]
+
   backend:
     env_file:
       - .env

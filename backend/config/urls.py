@@ -4,12 +4,18 @@ Backend URL configuration.
 """
 
 from django.contrib import admin
+from django.http import JsonResponse
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
+
+def health(request):
+    return JsonResponse({"status": "ok"})
+
+
 urlpatterns = [
+    path("health/", health),
     path("admin/", admin.site.urls),
-    
     # API Endpoints
     path("api/auth/", include("apps.authentication.urls")),
     path("api/places/", include("apps.places.urls")),
@@ -17,7 +23,6 @@ urlpatterns = [
     path("api/routes/", include("apps.routes.urls")),
     path("api/trips/", include("apps.trips.urls")),
     path("api/recommendations/", include("apps.recommendations.urls")),
-    
     # Documentation endpoints
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(

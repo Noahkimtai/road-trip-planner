@@ -7,7 +7,9 @@ from .models import User
 class UserRegistrationSerializer(serializers.ModelSerializer):
     """serializer for user registration"""
 
-    password = serializers.CharField(write_only=True, validators=[validate_password])
+    password = serializers.CharField(
+        write_only=True, validators=[validate_password]
+    )
     password_confirm = serializers.CharField(write_only=True)
 
     class Meta:
@@ -32,23 +34,15 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return user
 
 
-class UserLoginSerializer(serializers.ModelSerializer):
+class UserLoginSerializer(serializers.Serializer):
     """Serializer for user login"""
 
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
 
-    class Meta:
-        model = User
-        fields = (
-            "email",
-            "username",
-            "password",
-        )
-
     def validate(self, attrs):
-        email = attrs.get("emai")
-        password = attrs.get(password)
+        email = attrs.get("email")
+        password = attrs.get("password")
 
         if email and password:
             user = authenticate(username=email, password=password)
@@ -60,7 +54,9 @@ class UserLoginSerializer(serializers.ModelSerializer):
             attrs["user"] = user
 
         else:
-            raise serializers.ValidationError("Must include email and password")
+            raise serializers.ValidationError(
+                "Must include email and password"
+            )
 
         return attrs
 

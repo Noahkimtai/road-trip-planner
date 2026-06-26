@@ -67,11 +67,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name="trip",
-            name="start_date",
-            field=models.DateField(blank=True, null=True),
-        ),
-        migrations.AlterField(
-            model_name="trip",
             name="total_distance",
             field=models.FloatField(default=0, help_text="Total distance in miles"),
         ),
