@@ -38,28 +38,44 @@ services:
       - trip_network
     profiles: ["backend"]
 
-  tests:
+  # ── Backend test runner ─────────────────────────────────────────────────────
+  # Runs the pytest suite against a live PostgreSQL instance.
+  # Usage:  docker compose --profile tests run --rm backend-tests
+  backend-tests:
     env_file:
-        - .env        
+      - .env
     build:
-        context: ./backend
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: trip-planner-backend-tests
     volumes:
-        - ./backend:/app
+      - ./backend:/app
     depends_on:
-        db:
-            condition: service_healthy
-        redis:
-            condition: service_started
+      db:
+        condition: service_healthy
     environment:
-        DJANGO_SETTINGS_MODULE: backend.config.settings
-        DATABASE_HOST: ${DATABASE_HOST}
-        DATABASE_PORT: ${DATABASE_PORT}
-        POSTGRES_DB: ${POSTGRES_DB}
-        POSTGRES_USER: ${POSTGRES_USER}
-        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        REDIS_URL: ${REDIS_URL}
-    command: pytest
-    profiles: ["test"]
+      # Django uses DATABASE_URL; DJANGO_SETTINGS_MODULE is also in pytest.ini
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@db:${DATABASE_PORT}/${POSTGRES_DB}
+      DJANGO_SETTINGS_MODULE: config.settings
+    command: ["python", "-m", "pytest", "tests/", "-v", "--tb=short"]
+    networks:
+      - trip_network
+    profiles: ["tests"]
+
+  # ── Frontend test runner ────────────────────────────────────────────────────
+  # Runs the Vitest suite (no network or DB required — all I/O is mocked).
+  # Usage:  docker compose --profile tests run --rm frontend-tests
+  frontend-tests:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: trip-planner-frontend-tests
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: ["npm", "test"]
+    profiles: ["tests"]
+
   db:
     env_file:
       - .env
@@ -70,7 +86,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - "5430:5432" # optional
+      - "5430:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
