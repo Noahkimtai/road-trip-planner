@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Clock, Route, DollarSign, Eye, Edit, Trash2 } from "lucide-react";
 import { toastService } from "@/services/toast";
 import { apiService } from "@/services/api";
+import { NotificationBell } from "@/components/NotificationBell/NotificationBell";
 
 export const TripPlannerDemo: React.FC = () => {
   const [createdTrips, setCreatedTrips] = useState<Trip[]>([]);
@@ -257,7 +258,10 @@ export const TripPlannerDemo: React.FC = () => {
       {/* Left Sidebar - Created Trips */}
       <div className="w-80 bg-background border-r overflow-y-auto">
         <div className="p-4">
-          <h2 className="text-xl font-semibold mb-4">My Trips ({createdTrips.length})</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold">My Trips ({createdTrips.length})</h2>
+            <NotificationBell />
+          </div>
           
           {isLoadingTrips ? (
             <div className="text-center py-8">

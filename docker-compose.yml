@@ -38,6 +38,52 @@ services:
       - trip_network
     profiles: ["backend"]
 
+  # ── Celery worker ──────────────────────────────────────────────────────────
+  celery-worker:
+    env_file:
+      - .env
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: trip-planner-celery-worker
+    command: ["celery", "-A", "config", "worker", "--loglevel=info"]
+    volumes:
+      - ./backend:/app
+    environment:
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@db:${DATABASE_PORT}/trip-planner
+      REDIS_URL: ${REDIS_URL}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - trip_network
+    profiles: ["backend"]
+
+  # ── Celery beat scheduler ──────────────────────────────────────────────────
+  celery-beat:
+    env_file:
+      - .env
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: trip-planner-celery-beat
+    command: ["celery", "-A", "config", "beat", "--loglevel=info", "--scheduler", "django_celery_beat.schedulers:DatabaseScheduler"]
+    volumes:
+      - ./backend:/app
+    environment:
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@db:${DATABASE_PORT}/trip-planner
+      REDIS_URL: ${REDIS_URL}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - trip_network
+    profiles: ["backend"]
+
   # ── Backend test runner ─────────────────────────────────────────────────────
   # Runs the pytest suite against a live PostgreSQL instance.
   # Usage:  docker compose --profile tests run --rm backend-tests

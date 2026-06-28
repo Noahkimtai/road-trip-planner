@@ -23,6 +23,7 @@ urlpatterns = [
     path("api/routes/", include("apps.routes.urls")),
     path("api/trips/", include("apps.trips.urls")),
     path("api/recommendations/", include("apps.recommendations.urls")),
+    path("api/messaging/", include("apps.messaging.urls")),
     # Documentation endpoints
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
